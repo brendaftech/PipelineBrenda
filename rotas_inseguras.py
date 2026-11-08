@@ -1,5 +1,7 @@
 import os
+import re
 import sqlite3
+import subprocess
 
 from flask import Flask, request
 
@@ -17,7 +19,9 @@ def buscar_usuario():
 @app.get("/ping")
 def ping():
     maquina = request.args.get("maquina", "")
-    os.system("ping -c 1 " + maquina)
+    if not re.fullmatch(r"[A-Za-z0-9.-]+", maquina):
+        return "maquina invalida", 400
+    subprocess.run(["ping", "-c", "1", maquina], check=False, capture_output=True, text=True)
     return "ping enviado"
 
 
