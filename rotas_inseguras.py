@@ -10,8 +10,8 @@ app = Flask(__name__)
 def buscar_usuario():
     nome = request.args.get("nome", "")
     conexao = sqlite3.connect("banco.db")
-    consulta = "SELECT * FROM usuarios WHERE nome = '" + nome + "'"
-    return str(conexao.execute(consulta).fetchall())
+    consulta = "SELECT * FROM usuarios WHERE nome = ?"
+    return str(conexao.execute(consulta, (nome,)).fetchall())
 
 
 @app.get("/ping")
